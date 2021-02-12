@@ -109,8 +109,7 @@ function writePassword() {
   }
 
   // return password;
-  password = newPassword.toString();
-  password = password.replace(/,/g, '');
+  password = newPassword.join('');
   passwordText.value = password;
 }
 
