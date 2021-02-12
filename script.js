@@ -1,6 +1,7 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
+// establish variables for password length and confirm booleans
 var passwordLength;
 var lowerCaseChosen;
 var upperCaseChosen;
@@ -13,6 +14,7 @@ var lowerCaseCharacters = "abcdefghijklmnopqrstuvwxyz";
 var upperCaseCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var numberCharacters = "0123456789";
 var specialCharacters = " !#\"$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+
 var selectCharacter;
 var newPassword = [];
 var passwordInvalid;
@@ -24,7 +26,7 @@ function writePassword() {
   criteriaChosen = ["lowerCase", "upperCase", "numbers", "special"];
   
   function generatePassword() {
-    // variable for password length
+    // variable for password length    
     passwordLength = prompt("How long would you like your password to be?");
 
     //check for valid length
@@ -40,7 +42,7 @@ function writePassword() {
     // boolean variables for chosen criteria
     lowerCaseChosen = confirm("Would you like your password to include lowercase characters?");
     upperCaseChosen = confirm("Would you like your password to include uppercase characters?");
-    numberChosen = confirm("Would you like your password to include numbers characters?");
+    numberChosen = confirm("Would you like your password to include number characters?");
     specialChosen = confirm("Would you like your password to include special characters?");
       
     // edit criteria array to reflect which variables selected.
@@ -60,16 +62,36 @@ function writePassword() {
       criteriaChosen.splice(0, 1);
     } 
 
+    // display error if no character types selected
     if (criteriaChosen.length === 0) {
       passwordInvalid = window.alert("Password must inlcude at least one character type.");
       return;
     }
-          
+    
+    // after criteria selected, call function to build password
     createPassword();
   }
 
   function createPassword() {
-    for (i = 0; i < passwordLength; i++) {
+    // reset newPassword variable
+    newPassword = [];
+
+    // make sure each chosen criteria has been used at least once
+    for (i = 0; i < criteriaChosen.length; i++) {
+      //choose a random character and add it to the password array
+      if (criteriaChosen[i] === "lowerCase") {
+        newPassword[i] = lowerCaseCharacters[Math.floor(Math.random() * lowerCaseCharacters.length)];
+      } else if (criteriaChosen[i] === "upperCase") {
+        newPassword[i] = upperCaseCharacters[Math.floor(Math.random() * upperCaseCharacters.length)];
+      } else if (criteriaChosen[i] === "numbers") {
+        newPassword[i] = numberCharacters[Math.floor(Math.random() * numberCharacters.length)];
+      } else if (criteriaChosen[i] === "special") {
+        newPassword[i] = specialCharacters[Math.floor(Math.random() * specialCharacters.length)];
+      }
+    }
+
+    // complete the password
+    for (i = criteriaChosen.length; i < passwordLength; i++) {
       //choose a random criteria
       selectCharacter = Math.floor(Math.random() * criteriaChosen.length);
 
@@ -83,18 +105,13 @@ function writePassword() {
       } else if (criteriaChosen[selectCharacter] === "special") {
         newPassword[i] = specialCharacters[Math.floor(Math.random() * specialCharacters.length)];
       }
-    
     }   
-  
   }
-
-  // at a certain point, make sure each chosen criteria has been used at least once
 
   // return password;
   password = newPassword.toString();
   password = password.replace(/,/g, '');
   passwordText.value = password;
-
 }
 
 // Add event listener to generate button
